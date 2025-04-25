@@ -1,6 +1,8 @@
 
 # FLUX LoRA DLC2 🔥
 
+https://github.com/user-attachments/assets/891a0ad2-caad-4376-852e-4b8aeee0ea5e
+
 Experience the power of the **FLUX.1-dev** diffusion model combined with a massive collection of **100+ community-created LoRAs**! This Gradio application provides an easy-to-use interface to explore diverse artistic styles directly on top of the FLUX base model.
 
 This "DLC Pack 2" builds upon the concept of easily accessible style enhancements (LoRAs) for the cutting-edge FLUX model. Generate stunning images, experiment with styles, and even load your own custom FLUX-compatible LoRAs from the Hugging Face Hub.
