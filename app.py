@@ -2,9 +2,11 @@ import os
 import json
 import copy
 import time
+import requests
 import random
 import logging
 import numpy as np
+import spaces
 from typing import Any, Dict, List, Optional, Union
 
 import torch
@@ -27,16 +29,6 @@ from huggingface_hub import (
 
 from diffusers.utils import load_image
 
-import spaces
-
-#---if workspace = local or colab---
-
-# Authenticate with Hugging Face
-# from huggingface_hub import login
-
-# Log in to Hugging Face using the provided token
-# hf_token = 'hf-token-authentication'
-# login(hf_token)
 
 def calculate_shift(
     image_seq_len,
@@ -194,6 +186,22 @@ def flux_pipe_call_that_returns_an_iterable_of_images(
 
 #------------------------------------------------------------------------------------------------------------------------------------------------------------#
 loras = [
+    #63
+    {
+        "image": "https://huggingface.co/Datou1111/flux-sincity-movie/resolve/main/images/img__00685_.png",
+        "title": "Sincity Movie",
+        "repo": "Datou1111/flux-sincity-movie",
+        "weights": "sincitymov.safetensors",
+        "trigger_word": "sincitymov"    
+    },
+    #53
+    {
+        "image": "https://huggingface.co/fofr/flux-condensation/resolve/main/images/example_crzf2b8xi.png",
+        "title": "Condensation",
+        "repo": "fofr/flux-condensation",
+        "weights": "lora.safetensors",
+        "trigger_word": "CONDENSATION"    
+    },
     #24
     {
         "image": "https://huggingface.co/strangerzonehf/Flux-Claymation-XC-LoRA/resolve/main/images/4.png",
@@ -210,6 +218,22 @@ loras = [
         "weights": "Icon-Kit.safetensors",
         "trigger_word": "Icon Kit"    
     },
+    #Silver
+    {
+        "image": "https://huggingface.co/strangerzonehf/Dynamic-Silver-Flux/resolve/main/images/5.png",
+        "title": "Dynamic Silver Art",
+        "repo": "strangerzonehf/Dynamic-Silver-Flux",
+        "weights": "Dynamic-Silver-Flux.safetensors",
+        "trigger_word": "Dynamic Silver Art"    
+    },
+    #isometric-skeumorphic-3d-bnb
+    {
+        "image": "https://huggingface.co/multimodalart/isometric-skeumorphic-3d-bnb/resolve/main/images/example_49fo6elqe.png",
+        "title": "Isometric Skeumorphic 3D",
+        "repo": "multimodalart/isometric-skeumorphic-3d-bnb",
+        "weights": "isometric-skeumorphic-3d-bnb.safetensors",
+        "trigger_word": "RBNBICN, icon, white background, isometric perspective"    
+    },
     #43
     {
         "image": "https://huggingface.co/strangerzonehf/Flux-Cardboard-Art-LoRA/resolve/main/images/6.png",
@@ -217,22 +241,6 @@ loras = [
         "repo": "strangerzonehf/Flux-Cardboard-Art-LoRA",
         "weights": "cardboard# art.safetensors",
         "trigger_word": "cardboard# art"    
-    },
-    #53
-    {
-        "image": "https://huggingface.co/fofr/flux-condensation/resolve/main/images/example_crzf2b8xi.png",
-        "title": "Condensation",
-        "repo": "fofr/flux-condensation",
-        "weights": "lora.safetensors",
-        "trigger_word": "CONDENSATION"    
-    },
-    #63
-    {
-        "image": "https://huggingface.co/Datou1111/flux-sincity-movie/resolve/main/images/img__00685_.png",
-        "title": "Sincity Movie",
-        "repo": "Datou1111/flux-sincity-movie",
-        "weights": "sincitymov.safetensors",
-        "trigger_word": "sincitymov"    
     },
     #88
     {
@@ -701,11 +709,11 @@ loras = [
     },
     #58
     {
-        "image": "https://huggingface.co/strangerzonehf/cinematicShot-Pics-Flux/resolve/main/images/4.png",
-        "title": "Cinematic Shot",
-        "repo": "strangerzonehf/cinematicShot-Pics-Flux",
-        "weights": "cinematic-shot.safetensors",
-        "trigger_word": "cinematic shot"    
+        "image": "https://huggingface.co/glif/dithering/resolve/main/images/A_young_woman_with_long_hair_looking_over_her_shoulder_portrait_in_ATKSN_style.png",
+        "title": "Dithering",
+        "repo": "glif/dithering",
+        "weights": "flux_dev_Dither_Atkinson_Coarse_captions.safetensors",
+        "trigger_word": "in ATKSN style"    
     },
     #59
     {
@@ -1003,6 +1011,15 @@ loras = [
         "weights": "WaterColorSketchStyle.safetensors",
         "trigger_word": "WaterColorSketchStyle"    
     }, 
+    #102
+    {
+        "image": "https://huggingface.co/strangerzonehf/Flux-Midjourney-Painterly-LoRA/resolve/main/images/222.png",
+        "title": "Midjourney-Painterly",
+        "repo": "strangerzonehf/Flux-Midjourney-Painterly-LoRA",
+        "weights": "midjourney-painterly.safetensors",
+        "trigger_word": "mj painterly"    
+    }, 
+    #103
 ]
 
 #--------------------------------------------------Model Initialization-----------------------------------------------------------------------------------------#
@@ -1260,7 +1277,7 @@ css = '''
 .progress-bar {height: 100%;background-color: #4f46e5;width: calc(var(--current) / var(--total) * 100%);transition: width 0.5s ease-in-out}
 '''
 
-with gr.Blocks(theme=gr.themes.Soft(), css=css, delete_cache=(60, 60)) as app:
+with gr.Blocks(theme="bethecloud/storj_theme", css=css, delete_cache=(60, 60)) as app:
     title = gr.HTML(
         """<h1>FLUX LoRA DLC2🔥</h1>""",
         elem_id="title",
@@ -1332,4 +1349,4 @@ with gr.Blocks(theme=gr.themes.Soft(), css=css, delete_cache=(60, 60)) as app:
     )
 
 app.queue()
-app.launch(ssr_mode=False)
+app.launch(share=True, mcp_server=True, ssr_mode=False, show_error=True)
