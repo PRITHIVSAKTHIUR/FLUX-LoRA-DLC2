@@ -202,6 +202,14 @@ loras = [
         "weights": "lora.safetensors",
         "trigger_word": "CONDENSATION"    
     },
+    #new1
+    {
+        "image": "https://huggingface.co/renderartist/simplevectorflux/resolve/main/images/ComfyUI_09405_.jpeg",
+        "title": "Vector Flux",
+        "repo": "renderartist/simplevectorflux",
+        "weights": "Simple_Vector_Flux_v2_renderartist.safetensors",
+        "trigger_word": "v3ct0r, vector"    
+    },
     #24
     {
         "image": "https://huggingface.co/strangerzonehf/Flux-Claymation-XC-LoRA/resolve/main/images/4.png",
@@ -1285,7 +1293,7 @@ with gr.Blocks(theme="bethecloud/storj_theme", css=css, delete_cache=(60, 60)) a
     selected_index = gr.State(None)
     with gr.Row():
         with gr.Column(scale=3):
-            prompt = gr.Textbox(label="Prompt", lines=1, placeholder=":/ choose the LoRA and type the prompt ")
+            prompt = gr.Textbox(label="Prompt", lines=1, placeholder="✦︎ Choose the LoRA and type the prompt ")
         with gr.Column(scale=1, elem_id="gen_column"):
             generate_button = gr.Button("Generate", variant="primary", elem_id="gen_btn")
     with gr.Row():
@@ -1349,4 +1357,4 @@ with gr.Blocks(theme="bethecloud/storj_theme", css=css, delete_cache=(60, 60)) a
     )
 
 app.queue()
-app.launch(share=True, mcp_server=True, ssr_mode=False, show_error=True)
+app.launch(mcp_server=True, ssr_mode=False, show_error=True)
