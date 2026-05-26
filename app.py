@@ -1418,8 +1418,4 @@ with gr.Blocks(delete_cache=(60, 60)) as demo:
     )
 
 demo.queue()
-demo.launch(
-    theme=steel_blue_theme, 
-    css=css, mcp_server=True, 
-    ssr_mode=False,
-    show_error=True)
+demo.launch(theme=steel_blue_theme, css=css, mcp_server=True, ssr_mode=False, show_error=True)
