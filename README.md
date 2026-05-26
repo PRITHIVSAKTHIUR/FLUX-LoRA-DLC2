@@ -1,4 +1,4 @@
-# **FLUX-LoRA-DLC2**
+# **[FLUX-LoRA-DLC2](https://huggingface.co/spaces/prithivMLmods/FLUX-LoRA-DLC2)**
 
 FLUX-LoRA-DLC2 is an experimental, advanced image generation and image-to-image manipulation ecosystem. Built on top of the state-of-the-art `black-forest-labs/FLUX.1-dev` foundation, this application incorporates a dynamic multi-LoRA switching engine loaded with a comprehensive collection of over 100 stylistic adapters (such as Sin City Movie, Claymation XC, and Vector Flux styles). The environment introduces an adaptive decoding layout utilizing `madebyollin/taef1` for streaming latent previews and a localized high-fidelity VAE for final image synthesis. Featuring custom quality expansion presets, automated token blending rules, and direct Hugging Face repository scanning for custom third-party adapter loading, FLUX-LoRA-DLC2 functions as a robust sandbox for pushing artistic boundaries in generative artificial intelligence.
 
