@@ -1,138 +1,112 @@
+# **FLUX-LoRA-DLC2**
 
-# FLUX LoRA DLC2 🔥
+FLUX-LoRA-DLC2 is an experimental, advanced image generation and image-to-image manipulation ecosystem. Built on top of the state-of-the-art `black-forest-labs/FLUX.1-dev` foundation, this application incorporates a dynamic multi-LoRA switching engine loaded with a comprehensive collection of over 100 stylistic adapters (such as Sin City Movie, Claymation XC, and Vector Flux styles). The environment introduces an adaptive decoding layout utilizing `madebyollin/taef1` for streaming latent previews and a localized high-fidelity VAE for final image synthesis. Featuring custom quality expansion presets, automated token blending rules, and direct Hugging Face repository scanning for custom third-party adapter loading, FLUX-LoRA-DLC2 functions as a robust sandbox for pushing artistic boundaries in generative artificial intelligence.
 
 https://github.com/user-attachments/assets/891a0ad2-caad-4376-852e-4b8aeee0ea5e
 
-Experience the power of the **FLUX.1-dev** diffusion model combined with a massive collection of **100+ community-created LoRAs**! This Gradio application provides an easy-to-use interface to explore diverse artistic styles directly on top of the FLUX base model.
+### **Key Features**
 
-This "DLC Pack 2" builds upon the concept of easily accessible style enhancements (LoRAs) for the cutting-edge FLUX model. Generate stunning images, experiment with styles, and even load your own custom FLUX-compatible LoRAs from the Hugging Face Hub.
+* **Dynamic LoRA Loader & Selector:** Seamlessly browse and activate over 100 pre-configured stylistic LoRAs via an interactive structural grid gallery, or fetch any custom validation model directly by pasting its Hugging Face repository path.
+* **Dual Inference Strategies:** Fully supports both text-to-image generation and multi-step image-to-image editing, controlled by a precision denoise strength handler.
+* **Denoising Stream Previews:** Implements a text-to-latent generator iterator loop that updates intermediate image passes dynamically onto the preview canvas before the definitive VAE decode step.
+* **Granular Layout Parametrics:** Features expandable settings providing exact modifications over generation seed, steps, resolution configurations (up to 1536px), and LoRA scale blend metrics.
+* **Steel Blue Aesthetics:** Crafted using a bespoke developer-focused interface theme wrapped in explicit error feedback pipelines and dynamic execution tracking bars.
 
-## Features
+### **Repository Structure**
 
-*   **FLUX.1-dev Base Model:** Utilizes the powerful `black-forest-labs/FLUX.1-dev` model.
-*   **100+ Curated LoRAs:** A large, diverse gallery of pre-selected LoRAs with visual previews and trigger words (if applicable).
-*   **Custom LoRA Support:** Load any FLUX.1-dev or FLUX.1-schnell compatible LoRA directly from a Hugging Face Hub repository URL or ID.
-*   **Text-to-Image Generation:** Create images from text prompts combined with a selected LoRA style.
-*   **Image-to-Image Generation:** Modify an existing image using a prompt and a LoRA style.
-*   **Real-time Preview:** Leverages the tiny `TAEF1` VAE for quick previews during the generation steps (T2I only).
-*   **High-Quality Final Output:** Uses the full `FLUX.1-dev` VAE for decoding the final, high-resolution image.
-*   **Adjustable Parameters:** Control CFG scale, steps, image dimensions, seed, LoRA scale, and image strength (for I2I).
-*   **User-Friendly Interface:** Simple Gradio UI for easy interaction.
+```text
+├── app.py
+├── LICENSE
+├── pre-requirements.txt
+├── pyproject.toml
+├── README.md
+├── requirements.txt
+└── uv.lock
 
-## How to Use (Gradio Interface)
-
-1.  **Select a LoRA:**
-    *   Browse the **"100+ LoRA DLC's"** gallery and click on a style you like.
-    *   The selected LoRA's Hugging Face repository link will appear above the gallery.
-    *   The prompt placeholder will update, often suggesting the LoRA's title or trigger word.
-    *   **OR** Enter a Hugging Face Hub repository ID (e.g., `username/repo-name`) or URL (e.g., `https://huggingface.co/username/repo-name`) into the **"Enter Custom LoRA"** textbox. The app will attempt to load and validate it.
-2.  **Write Your Prompt:**
-    *   Enter your desired image description in the "Prompt" box.
-    *   **Important:** If the selected LoRA requires a specific **trigger word** (mentioned below the gallery selection or in the custom LoRA info card), make sure to include it in your prompt (usually at the beginning or end).
-3.  **(Optional) Image-to-Image:**
-    *   Expand the "Advanced Settings" section.
-    *   Upload an **"Input image"**.
-    *   Adjust the **"Denoise Strength"** slider. Lower values keep more of the original image, higher values allow more changes based on the prompt.
-4.  **(Optional) Advanced Settings:**
-    *   Adjust **CFG Scale**, **Steps**, **Width**, **Height**, **Seed**, and **LoRA Scale** as needed.
-    *   Check/uncheck **"Randomize seed"**.
-5.  **Generate:** Click the **"Generate"** button.
-6.  **View Output:**
-    *   For Text-to-Image, a progress bar and preview images will appear during generation.
-    *   The final, high-quality image will be displayed in the "Generated Image" panel once complete.
-
-## Custom LoRAs
-
-You can load FLUX LoRAs that are not in the pre-defined list:
-
-1.  Find a LoRA compatible with `black-forest-labs/FLUX.1-dev` or `black-forest-labs/FLUX.1-schnell` on the Hugging Face Hub.
-2.  Paste the repository ID (e.g., `prithivMLmods/Canopus-LoRA-Flux-Anime`) or the full URL into the "Enter Custom LoRA" textbox.
-3.  The application will attempt to:
-    *   Verify the `base_model` in the LoRA's `README.md` or `model_index.json`.
-    *   Find the `.safetensors` file within the repository.
-    *   Fetch a preview image (if available).
-    *   Extract trigger words (if defined in the metadata).
-4.  If successful, an info card will appear, and the custom LoRA will be selected. Remember to include any necessary trigger words in your prompt.
-5.  Use the "Remove custom LoRA" button to unload it and revert to the gallery selection.
-
-*Note: Only LoRAs specifically trained for FLUX.1-dev or FLUX.1-schnell are expected to work correctly.*
-
-## Technical Details
-
-*   **Base Model:** `black-forest-labs/FLUX.1-dev`
-*   **Preview VAE:** `madebyollin/taef1`
-*   **Final VAE:** From `black-forest-labs/FLUX.1-dev`
-*   **Core Library:** `diffusers`
-*   **UI Framework:** `gradio`
-*   **Backend:** `torch`
-
-## Running Locally
-
-1.  **Clone the repository:**
-    ```bash
-    git clone https://github.com/PRITHIVSAKTHIUR/FLUX-LoRA-DLC2.git
-    cd FLUX-LoRA-DLC2
-    ```
-2.  **Create a virtual environment (recommended):**
-    ```bash
-    python -m venv venv
-    source venv/bin/activate  # On Windows use `venv\Scripts\activate`
-    ```
-3.  **Install dependencies:**
-    ```bash
-    pip install -r requirements.txt
-    ```
-    *Ensure you have a compatible version of PyTorch installed, preferably with CUDA support if you have an NVIDIA GPU.* (See [pytorch.org](https://pytorch.org/))
-4.  **(Optional) Hugging Face Login:** For potentially faster downloads or access to private models (if ever needed):
-    ```bash
-    huggingface-cli login
-    # Or set environment variable: export HF_TOKEN=your_token
-    ```
-5.  **Run the application:**
-    ```bash
-    python app.py
-    ```
-6.  Open your web browser and navigate to the local URL provided (usually `http://127.0.0.1:7860`).
-
-## Dependencies
-
-*   `torch`
-*   `diffusers`
-*   `gradio`
-*   `transformers` (likely a sub-dependency of diffusers)
-*   `accelerate`
-*   `numpy`
-*   `Pillow`
-*   `huggingface-hub`
-*   `requests` (for fetching images, often a sub-dependency)
-
-See `requirements.txt` for specific versions.
-
-```bash
-# requirements.txt
-torch --index-url https://download.pytorch.org/whl/cu121 # Or adjust for your CUDA/CPU version
-diffusers>=0.29.0 # Check for latest compatible version
-gradio
-transformers
-accelerate
-numpy
-Pillow
-huggingface-hub
-requests
-# Optional: Add specific versions if needed based on compatibility
-# Example: diffusers==0.29.0
 ```
 
-*(Note: Create the `requirements.txt` file with the content above, adjusting the PyTorch line based on your system (CUDA version or CPU) if necessary.)*
+### **Installation and Requirements**
 
-## Acknowledgements
+To configure the FLUX-LoRA-DLC2 suite locally, set up a Python 3.12 environment with the following packages. Ensure your local configuration has access to a dedicated CUDA-capable GPU.
 
-*   **Black Forest Labs:** For creating the amazing FLUX models.
-*   **Hugging Face:** For the `diffusers`, `transformers`, `huggingface_hub` libraries and the Spaces platform.
-*   **Ollin:** For the `TAEF1` tiny autoencoder used for previews.
-*   **Gradio Team:** For the easy-to-use Gradio framework.
-*   **All LoRA Creators:** A huge thank you to the talented individuals and teams who created the LoRAs featured in this application! Your work makes exploring diverse styles incredibly accessible.
+**Standard PIP Installation**
 
-## License
+1. Update pip to meet requirements:
 
-This project is licensed under the Apache License 2.0. See the [LICENSE](LICENSE) file for details. (You'll need to add an Apache 2.0 LICENSE file to your repo).
+```bash
+pip install pip>=26.1
+
+```
+
+2. Install standard dependencies:
+
+```bash
+pip install -r requirements.txt
+
+```
+
+#### **Running with `uv` (Recommended)**
+
+`uv` is an ultra-fast Python package and project manager written in Rust, which ensures immediate, reproducible execution paths.
+
+**Step 1 — Install `uv**`
+
+* **macOS / Linux:** `curl -LsSf https://astral.sh/uv/install.sh | sh`
+* **Windows:** `powershell -c "irm https://astral.sh/uv/install.ps1 | iex"`
+
+**Step 2 — Clone the repository**
+
+```bash
+git clone https://github.com/PRITHIVSAKTHIUR/FLUX-LoRA-DLC2.git
+cd FLUX-LoRA-DLC2
+
+```
+
+**Step 3 — Initialize the project and install dependencies**
+
+```bash
+uv sync
+
+```
+
+**Step 4 — Run the script**
+
+```bash
+uv run app.py
+
+```
+
+### **Core Requirements List**
+
+The application depends on the following primary libraries (defined in `requirements.txt`):
+
+```text
+git+https://github.com/huggingface/accelerate.git
+git+https://github.com/huggingface/diffusers.git
+huggingface_hub
+sentencepiece 
+transformers==4.57.6
+torchvision
+gradio==6.14.0
+spaces
+torch==2.11.0
+numpy
+peft
+
+```
+
+---
+
+### **Usage**
+
+Once the FastAPI-backed Gradio client initializes on your device, open your local browser to the host address provided (typically `http://127.0.0.1:7860/`).
+
+1. **Choose a LoRA:** Select an existing entry from the **100+ LoRA DLC's** gallery card grid, or paste an external path into the **Enter Custom LoRA** panel.
+2. **Input Prompt:** Provide an explicit description into the primary input box. The system will combine your request with the adapter's specified trigger tokens.
+3. **Advanced Settings (Optional):** Expand the Accordion card to tweak the CFG Scale, Image-to-Image denoise values, width, height, or seed properties.
+4. **Generate:** Click **Generate** or press enter to see the live step-by-step rendering chain on the image pane.
+
+### **License and Source**
+
+* **License:** [Apache License 2.0](https://github.com/PRITHIVSAKTHIUR/FLUX-LoRA-DLC2/blob/main/LICENSE)
+* **GitHub Repository:** [https://github.com/PRITHIVSAKTHIUR/FLUX-LoRA-DLC2](https://github.com/PRITHIVSAKTHIUR/FLUX-LoRA-DLC2)
